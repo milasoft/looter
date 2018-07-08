@@ -1,0 +1,2 @@
+# looter
+Dreambot looter script
