@@ -48,7 +48,7 @@ public class GUI {
 	private JLabel areaButtonLabel;
 	private JComboBox<Integer> radiusDropdown;
 	private JLabel radiusLabel;
-	private JLabel coordinatesLabel;
+	private JLabel areaSetLabel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
 	private JTextField itemInput;
@@ -124,10 +124,10 @@ public class GUI {
 				Area a = c.getLocalPlayer().getSurroundingArea(radiusLocal);
 				config.setLootArea(a);
 				/**
-				 * Change our coordinates label to our current area.
+				 * Change our area set label to say yes if an area is set.
 				 */
-				coordinatesLabel.setForeground(Color.GREEN);
-				coordinatesLabel.setText("Yes");				
+				areaSetLabel.setForeground(Color.GREEN);
+				areaSetLabel.setText("Yes");				
 			}
 		});
 		bankLocationDropdown.addPropertyChangeListener(new PropertyChangeListener() {
@@ -231,10 +231,10 @@ public class GUI {
 		leftPanel.add(radiusLabel);
 		radiusLabel.setForeground(new Color(255, 255, 255));
 		
-		coordinatesLabel = new JLabel("No");
-		coordinatesLabel.setBounds(85, 15, 29, 16);
-		leftPanel.add(coordinatesLabel);
-		coordinatesLabel.setForeground(Color.RED);
+		areaSetLabel = new JLabel("No");
+		areaSetLabel.setBounds(85, 15, 29, 16);
+		leftPanel.add(areaSetLabel);
+		areaSetLabel.setForeground(Color.RED);
 		
 		areaButton = new JPanel();
 		areaButton.setBounds(65, 98, 70, 33);
