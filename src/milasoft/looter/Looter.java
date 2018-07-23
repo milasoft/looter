@@ -2,13 +2,13 @@ package milasoft.looter;
 
 import java.awt.Graphics;
 
-import org.dreambot.api.methods.container.impl.bank.BankLocation;
-import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.impl.TaskScript;
 
 import milasoft.looter.config.Config;
+import milasoft.looter.context.ContextProvider;
+import milasoft.looter.gui.GUI;
 import milasoft.looter.task.impl.Bank;
 import milasoft.looter.task.impl.Loot;
 
@@ -25,25 +25,27 @@ public class Looter extends TaskScript {
 	 */
 	Config config = Config.getConfig();
 	
+	/**
+	 * Declare our gui.
+	 */
+	GUI gui;
+	
 	@Override
 	public void onStart() {
 		/**
-		 * Set the area to loot. (Set to Lumbridge cows for testing.
+		 * Pass an instance of MethodContext to our ContextProvider to use in our gui.
 		 */
-		config.setLootArea(new Area(3253, 3272, 3265, 3255));
-		
+		ContextProvider.initialize(getClient().getMethodContext());
 		/**
-		 * Add the item(s) to loot to the item list.
+		 * Instantiate our GUI after we provide context to our ContextProvider.
 		 */
-		config.getItems().add("Bones");
-		
+		gui = new GUI();
 		/**
-		 * Set the bank location.
+		 * Display our GUI.
 		 */
-		config.setBankLocation(BankLocation.LUMBRIDGE);
-		
+		gui.show();
 		/**
-		 * Add our tasks to the script.
+		 * Add our task nodes to the script.
 		 */
 		addNodes(new Bank(), new Loot());
 	}
@@ -54,5 +56,13 @@ public class Looter extends TaskScript {
 		 * Draw some simple text showing which task we are doing.
 		 */
 		g.drawString("Status: " + config.getStatusText(), 10, 35);
+	}
+	
+	@Override
+	public void onExit() {
+		/**
+		 * Close our gui if left open.
+		 */
+		gui.dispose();
 	}
 }

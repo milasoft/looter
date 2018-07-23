@@ -1,7 +1,5 @@
 package milasoft.looter.task;
 
-import java.util.Random;
-
 import org.dreambot.api.script.TaskNode;
 
 import milasoft.looter.config.Config;
@@ -18,12 +16,7 @@ public abstract class AbstractTask extends TaskNode {
 	 * Obtain an instance of the Config class to use in our tasks.
 	 */
 	protected Config config = Config.getConfig();
-	
-	/**
-	 * Instantiate a new random class to generate random numbers.
-	 */
-	protected Random random = new Random();
-	
+		
 	/**
 	 * Checks whether the task should run.
 	 */

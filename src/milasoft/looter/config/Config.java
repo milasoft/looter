@@ -18,6 +18,11 @@ public class Config {
 	private static final Config config = new Config();
 	
 	/**
+	 * A boolean to check if our script should be running.
+	 */
+	private boolean scriptRunning = false;
+	
+	/**
 	 * The area on the map to loot in.
 	 */
 	private Area lootArea;
@@ -41,6 +46,20 @@ public class Config {
 	 * Hide the constructor, so that it will never be called externally. 
 	 */
 	private Config() {}
+
+	/**
+	 * Returns if the script is running.
+	 */
+	public boolean isScriptRunning() {
+		return scriptRunning;
+	}
+
+	/**
+	 * Sets the scriptRunning variable.
+	 */
+	public void setScriptRunning(boolean scriptRunning) {
+		this.scriptRunning = scriptRunning;
+	}
 
 	/**
 	 * Returns the looting area.

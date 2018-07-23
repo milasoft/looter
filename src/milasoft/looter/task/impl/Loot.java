@@ -1,5 +1,6 @@
 package milasoft.looter.task.impl;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.wrappers.items.GroundItem;
 
 import milasoft.looter.task.AbstractTask;
@@ -14,13 +15,20 @@ public class Loot extends AbstractTask {
 	@Override
 	public boolean accept() {
 		/**
-		 * If the players inventory is not full, this task can execute.
+		 * Make sure our script is supposed to run.
 		 */
-		if(!getInventory().isFull()) {
-			return true;
-		} else {
-			return false;
+		if(config.isScriptRunning()) {
+			/**
+			 * If the players inventory is not full, this task can execute.
+			 */
+			if(!getInventory().isFull()) {
+				return true;
+			}
 		}
+		/**
+		 * Return false if the script isn't running and the inventory is full.
+		 */
+		return false;
 	}
 	
 	@Override
@@ -36,11 +44,11 @@ public class Loot extends AbstractTask {
 			/**
 			 * Check if any items are on the ground and pick them up if there is.
 			 */
-			GroundItem g = getGroundItems().closest(f -> f != null && f.isOnScreen() && config.getLootArea().contains(f) && isItemInList(f.getName()));
+			GroundItem g = getGroundItems().closest(f -> f.isOnScreen() && config.getLootArea().contains(f) && isItemInList(f.getName()));
 			/**
-			 * Make sure the item isn't null, or else we will throw a Nullpointer Exception.
+			 * Make sure the item is valid.
 			 */
-			if(g != null) {
+			if(g != null && getMap().canReach(g)) {
 				/**
 				 * Pick up item.
 				 */
@@ -54,19 +62,14 @@ public class Loot extends AbstractTask {
 				getWalking().walk(config.getLootArea().getRandomTile());
 			}
 		}
-		return random.nextInt(500);
+		return Calculations.random(500);
 	}
 	
 	/**
 	 * This helper method checks our loot list to see if it contains the item.
 	 */
 	public boolean isItemInList(String name) {
-		for(String s : config.getItems()) {
-			if(s.equals(name)) {
-				return true;
-			}
-		}
-		return false;
+		return config.getItems().stream().anyMatch(s -> s.equals(name));
 	}
 
 }

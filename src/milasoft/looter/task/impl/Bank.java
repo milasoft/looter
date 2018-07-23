@@ -3,6 +3,8 @@
  */
 package milasoft.looter.task.impl;
 
+import org.dreambot.api.methods.Calculations;
+
 import milasoft.looter.task.AbstractTask;
 
 /**
@@ -14,13 +16,20 @@ public class Bank extends AbstractTask {
 	@Override
 	public boolean accept() {
 		/**
-		 * This task can only run if our inventory is full.
+		 * Make sure our script is supposed to run.
 		 */
-		if(getInventory().isFull()) {
-			return true;
-		} else {
-			return false;
+		if(config.isScriptRunning()) {
+			/**
+			 * This task can only run if our inventory is full.
+			 */
+			if(getInventory().isFull()) {
+				return true;
+			}
 		}
+		/**
+		 * Return false if the script isn't running and the inventory is not full.
+		 */
+		return false;
 	}
 
 	@Override
@@ -55,7 +64,7 @@ public class Bank extends AbstractTask {
 				getWalking().walk(config.getBankLocation().getArea(1).getRandomTile());
 			}
 		}
-		return random.nextInt(500);
+		return Calculations.random(500);
 	}
 
 }
