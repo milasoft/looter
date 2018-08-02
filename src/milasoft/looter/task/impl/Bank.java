@@ -1,6 +1,3 @@
-/**
- * 
- */
 package milasoft.looter.task.impl;
 
 import org.dreambot.api.methods.Calculations;
