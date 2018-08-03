@@ -13,20 +13,9 @@ public class Bank extends AbstractTask {
 	@Override
 	public boolean accept() {
 		/**
-		 * Make sure our script is supposed to run.
+		 * Make sure our script is supposed to run and our inventory is full.
 		 */
-		if(config.isScriptRunning()) {
-			/**
-			 * This task can only run if our inventory is full.
-			 */
-			if(getInventory().isFull()) {
-				return true;
-			}
-		}
-		/**
-		 * Return false if the script isn't running and the inventory is not full.
-		 */
-		return false;
+		return config.isScriptRunning() && getInventory().isFull();
 	}
 
 	@Override

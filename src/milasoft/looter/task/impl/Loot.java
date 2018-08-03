@@ -15,20 +15,9 @@ public class Loot extends AbstractTask {
 	@Override
 	public boolean accept() {
 		/**
-		 * Make sure our script is supposed to run.
+		 * Make sure our script is running and our inventory is not full.
 		 */
-		if(config.isScriptRunning()) {
-			/**
-			 * If the players inventory is not full, this task can execute.
-			 */
-			if(!getInventory().isFull()) {
-				return true;
-			}
-		}
-		/**
-		 * Return false if the script isn't running and the inventory is full.
-		 */
-		return false;
+		return config.isScriptRunning() && !getInventory().isFull();
 	}
 	
 	@Override
@@ -44,11 +33,11 @@ public class Loot extends AbstractTask {
 			/**
 			 * Check if any items are on the ground and pick them up if there is.
 			 */
-			GroundItem g = getGroundItems().closest(f -> f.isOnScreen() && config.getLootArea().contains(f) && isItemInList(f.getName()));
+			GroundItem g = getGroundItems().closest(f -> canPickup(f) && isItemInList(f.getName()));
 			/**
 			 * Make sure the item is valid.
 			 */
-			if(g != null && getMap().canReach(g)) {
+			if(g != null) {
 				/**
 				 * Pick up item.
 				 */
@@ -68,8 +57,14 @@ public class Loot extends AbstractTask {
 	/**
 	 * This helper method checks our loot list to see if it contains the item.
 	 */
-	public boolean isItemInList(String name) {
+	private boolean isItemInList(String name) {
 		return config.getItems().stream().anyMatch(s -> s.equals(name));
 	}
-
+	
+	/**
+	 * This helper method checks if the item can be picked up.
+	 */
+	private boolean canPickup(GroundItem g) {
+		return getMap().canReach(g) && config.getLootArea().contains(g);
+	}
 }
